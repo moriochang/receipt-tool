@@ -184,6 +184,40 @@ body{
 #cv{display:block;width:100%;height:auto;}
 .preview-note{font-size:11px;color:#aeaeb2;text-align:center;line-height:1.6;}
 
+.form-footer{
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px solid #e5e5ea;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+}
+.sheet-link{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#fff;
+  border:1px solid #d1d1d6;
+  border-radius:10px;
+  padding:10px 16px;
+  font-size:13px;font-weight:500;
+  color:#1c1c1e;
+  text-decoration:none;
+  transition:background .15s,border-color .15s,box-shadow .15s;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.sheet-link:hover{
+  background:#f2f2f7;
+  border-color:#007aff;
+  color:#007aff;
+  box-shadow:0 2px 8px rgba(0,122,255,.12);
+}
+.sheet-link svg{flex-shrink:0;}
+.credit{
+  font-size:11px;
+  color:#aeaeb2;
+  letter-spacing:.02em;
+}
+
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:#d1d1d6;border-radius:3px}
@@ -404,6 +438,26 @@ body{
       <button class="btn-clr" onclick="clearAll()">清除</button>
     </div>
     <div class="st" id="st"></div>
+
+    <!-- Quick link + credit -->
+    <div class="form-footer">
+      <a class="sheet-link" href="https://docs.google.com/spreadsheets/d/1n9yfa22BR0ytfUBNEKO_iQU0DGd3f4bMFLGiQHBZ-AE/edit?gid=0#gid=0" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        開啟 EDU 表單 Google Sheets
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>
+      <div class="credit">Created by Morio &copy; 2025</div>
+    </div>
   </div>
 
   <!-- Preview -->
