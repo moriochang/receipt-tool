@@ -436,12 +436,7 @@ const L = {
 
 // ── Google Apps Script 網址（部署後貼上）────────────────
 // 請將下方網址換成你的 Apps Script 部署網址
-// ╔══════════════════════════════════════════════════════╗
-// ║  請將下方網址換成你的 Apps Script 部署網址             ║
-// ║  步驟：Google Sheet → 擴充功能 → Apps Script          ║
-// ║       → 部署 → 新增部署 → 網頁應用程式 → 複製網址      ║
-// ╚══════════════════════════════════════════════════════╝
-const GAS_URL = 'YOUR_Ghttps://script.google.com/macros/s/AKfycbx6aZkjDu51gmom91Q1pNaWguoSEY2efTTCRnl6M5kRQAX2pt3Llz0eGVeKLO-AyXg/execAS_URL_HERE';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbx6aZkjDu51gmom91Q1pNaWguoSEY2efTTCRnl6M5kRQAX2pt3Llz0eGVeKLO-AyXg/exec';
 
 const FONT = `-apple-system,'SF Pro Text','PingFang TC','Helvetica Neue',sans-serif`;
 const cv   = document.getElementById('cv');
@@ -638,7 +633,7 @@ async function saveToSheets() {
   const btn = document.getElementById('btnSave');
   const st  = document.getElementById('st');
 
-  if (GAS_URL === 'YOUR_GAS_URL_HERE') {
+  if (!GAS_URL || GAS_URL === 'YOUR_GAS_URL_HERE') {
     st.textContent = '⚠  請先設定 Apps Script 網址（GAS_URL）';
     st.className = 'st err';
     return;
