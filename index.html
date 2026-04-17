@@ -37,6 +37,17 @@ body{
 .sb-item svg{flex-shrink:0;opacity:.7}
 .sb-item.active svg{opacity:1}
 .sb-note{font-size:11px;color:#475569;line-height:1.6;padding:0 10px;}
+.sb-link{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 10px;border-radius:8px;
+  font-size:12px;font-weight:500;color:#94a3b8;
+  text-decoration:none;margin-bottom:2px;
+  transition:background .15s,color .15s;
+}
+.sb-link:hover{background:#1e293b;color:#e2e8f0;}
+.sb-link span{flex:1;}
+.sb-ext{opacity:.4;flex-shrink:0;}
+.sb-link:hover .sb-ext{opacity:.7;}
 .sb-footer{margin-top:auto;padding:16px 20px;border-top:1px solid #1e293b;}
 .sb-today{font-size:10.5px;color:#334155;line-height:1.6;}
 .sb-today strong{color:#64748b;display:block;font-size:11.5px;}
@@ -249,6 +260,42 @@ body{
       填寫簽收單
     </div>
   </div>
+  <div class="sb-section">
+    <div class="sb-sl">快速連結</div>
+    <a class="sb-link" href="https://www.icloud.com/numbers/01eYry0PTGlROqzR0_sMXA8Xg" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+      </svg>
+      <span>Edu Price</span>
+      <svg class="sb-ext" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+    </a>
+    <a class="sb-link" href="https://www.eduwebportal.com/login.php" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <span>EDU 查詢</span>
+      <svg class="sb-ext" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+    </a>
+    <a class="sb-link" href="https://docs.google.com/spreadsheets/d/1n9yfa22BR0ytfUBNEKO_iQU0DGd3f4bMFLGiQHBZ-AE/edit?gid=0#gid=0" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      <span>Google EDU 表單</span>
+      <svg class="sb-ext" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+    </a>
+  </div>
+
   <div class="sb-section">
     <div class="sb-sl">說明</div>
     <div class="sb-item">
