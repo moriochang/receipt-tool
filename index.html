@@ -824,14 +824,17 @@ async function saveToSheets() {
 
     const resp = await fetch(GAS_URL, {
       method:  'POST',
-      mode:    'no-cors',   // must use text/plain to avoid preflight
-      headers: { 'Content-Type': 'text/plain' },
+      headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ rows }),
     });
 
-    // no-cors returns opaque response; assume success if no exception
-    st.textContent = `✓  已存入 Google Sheets（${rows.length} 筆）`;
-    st.className = 'st ok';
+    const sheetsResult = await resp.json();
+    if (sheetsResult.ok) {
+      st.textContent = `✓  已存入 Google Sheets（${sheetsResult.written} 筆）`;
+      st.className = 'st ok';
+    } else {
+      throw new Error(sheetsResult.error || '存檔失敗');
+    }
 
   } catch(e) {
     st.textContent = '❌  存檔失敗：' + e.message;
@@ -980,21 +983,23 @@ async function saveToDrive() {
     // Get PDF as base64
     const pdfBase64 = pdf.output('datauristring').split(',')[1];
 
-    // Send to GAS (no-cors — must use text/plain to avoid preflight)
-    await fetch(GAS_URL, {
-      method: 'POST',
-      mode:   'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
+    // Send PDF to GAS (with CORS headers in GAS v3)
+    const resp = await fetch(GAS_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         type:     'pdf',
         base64:   pdfBase64,
         filename: filename,
       }),
     });
-
-    // no-cors returns opaque response — assume success if no exception
-    st.innerHTML = `✓ 已儲存至 Google Drive &nbsp;·&nbsp; <a href="https://drive.google.com/drive/folders/1Hw8F3L4zxIBnw5EJCvHMY7ro8qLV5Vtd" target="_blank" style="color:#007aff;text-decoration:none;font-weight:600;">開啟資料夾 ↗</a>`;
-    st.className = 'st ok';
+    const result = await resp.json();
+    if (result.ok) {
+      st.innerHTML = `✓ 已儲存至 Google Drive &nbsp;·&nbsp; <a href="${result.url}" target="_blank" style="color:#007aff;text-decoration:none;font-weight:600;">開啟檔案 ↗</a>`;
+      st.className = 'st ok';
+    } else {
+      throw new Error(result.error || '上傳失敗');
+    }
 
   } catch(e) {
     st.textContent = '❌ 上傳失敗：' + e.message;
