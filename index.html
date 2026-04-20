@@ -823,12 +823,15 @@ async function saveToSheets() {
     }
 
     // GAS doesn't support OPTIONS preflight → must use no-cors + text/plain
+    const sheetsPayload = JSON.stringify({ rows });
+    console.log(`[Sheets] Sending ${rows.length} rows, payload: ${Math.round(sheetsPayload.length/1024)} KB to:`, GAS_URL);
     await fetch(GAS_URL, {
       method:  'POST',
       mode:    'no-cors',
       headers: { 'Content-Type': 'text/plain' },
-      body:    JSON.stringify({ rows }),
+      body:    sheetsPayload,
     });
+    console.log('[Sheets] fetch completed');
 
     // no-cors = opaque response — assume success if no throw
     st.textContent = `✓  已存入 Google Sheets（${rows.length} 筆）`;
@@ -957,8 +960,8 @@ async function saveToDrive() {
   try {
     await new Promise(r => setTimeout(r, 80));
 
-    // Generate PDF canvas at 4x
-    const S = 4, ec = document.createElement('canvas');
+    // Generate PDF at 2x for Drive (smaller payload, still good quality)
+    const S = 2, ec = document.createElement('canvas');
     ec.width = 707*S; ec.height = 1000*S;
     const ex = ec.getContext('2d');
     ex.save(); ex.scale(S, S);
@@ -968,7 +971,10 @@ async function saveToDrive() {
 
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-    pdf.addImage(ec.toDataURL('image/jpeg', 0.97), 'JPEG', 0, 0, 210, 297);
+    const imgData = ec.toDataURL('image/jpeg', 0.88);
+    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+    const estimatedKB = Math.round(imgData.length * 0.75 / 1024);
+    console.log(`[Drive] PDF base64 size: ~${estimatedKB} KB`);
 
     // Build filename
     const inv    = v('invoiceNo');
@@ -982,13 +988,15 @@ async function saveToDrive() {
     const pdfBase64 = pdf.output('datauristring').split(',')[1];
 
     // GAS doesn't support OPTIONS preflight → must use no-cors + text/plain
+    const payload = JSON.stringify({ type: 'pdf', base64: pdfBase64, filename });
+    console.log(`[Drive] Sending payload size: ${Math.round(payload.length/1024)} KB to:`, GAS_URL);
     await fetch(GAS_URL, {
       method:  'POST',
       mode:    'no-cors',
       headers: { 'Content-Type': 'text/plain' },
-      body:    JSON.stringify({ type: 'pdf', base64: pdfBase64, filename }),
+      body:    payload,
     });
-    // no-cors = opaque response, can't read reply — assume success if no throw
+    console.log('[Drive] fetch completed (no-cors = opaque, no error = likely success)');
     st.innerHTML = `✓ 已儲存至 Google Drive &nbsp;·&nbsp; <a href="https://drive.google.com/drive/folders/1Hw8F3L4zxIBnw5EJCvHMY7ro8qLV5Vtd" target="_blank" style="color:#007aff;text-decoration:none;font-weight:600;">開啟資料夾 ↗</a>`;
     st.className = 'st ok';
 
