@@ -931,7 +931,7 @@ async function exportPDF() {
     const studentID = v('studentID');
     const fid       = (inv || studentID || '簽收單').replace(/[/\\:*?"<>|]/g,'_').substring(0,40);
     const t = getToday();
-    pdf.save(`商品簽收單_${fid}_${t.str}.pdf`);
+    pdf.save(`${fid}.pdf`);
     st.textContent = '✓  PDF 已下載'; st.className = 'st ok';
   } catch(e) {
     st.textContent = '⚠  ' + e.message; st.className = 'st err';
@@ -980,7 +980,7 @@ async function saveToDrive() {
     const studentID = v('studentID');
     const t         = getToday();
     const fid       = (inv || studentID || '簽收單').replace(/[/\\:*?"<>|]/g,'_').substring(0,40);
-    const filename  = `商品簽收單_${fid}_${t.str}.pdf`;
+    const filename  = `${fid}.pdf`;
 
     // Get PDF as base64
     const pdfBase64 = pdf.output('datauristring').split(',')[1];
