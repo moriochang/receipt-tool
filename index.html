@@ -927,10 +927,9 @@ async function exportPDF() {
     const pdf = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
     pdf.addImage(ec.toDataURL('image/jpeg', 0.97), 'JPEG', 0, 0, 210, 297);
 
-    const inv    = v('invoiceNo');
-    const serial = v('serialNo');
-    const pn     = v('productName');
-    const fid    = (inv||serial||pn||'簽收單').replace(/[/\\:*?"<>|]/g,'_').substring(0,40);
+    const inv       = v('invoiceNo');
+    const studentID = v('studentID');
+    const fid       = (inv || studentID || '簽收單').replace(/[/\\:*?"<>|]/g,'_').substring(0,40);
     const t = getToday();
     pdf.save(`商品簽收單_${fid}_${t.str}.pdf`);
     st.textContent = '✓  PDF 已下載'; st.className = 'st ok';
@@ -977,12 +976,11 @@ async function saveToDrive() {
     console.log(`[Drive] PDF base64 size: ~${estimatedKB} KB`);
 
     // Build filename
-    const inv    = v('invoiceNo');
-    const serial = v('serialNo');
-    const pn     = v('productName');
-    const t      = getToday();
-    const fid    = (inv||serial||pn||'簽收單').replace(/[/\\:*?"<>|]/g,'_').substring(0,40);
-    const filename = `商品簽收單_${fid}_${t.str}.pdf`;
+    const inv       = v('invoiceNo');
+    const studentID = v('studentID');
+    const t         = getToday();
+    const fid       = (inv || studentID || '簽收單').replace(/[/\\:*?"<>|]/g,'_').substring(0,40);
+    const filename  = `商品簽收單_${fid}_${t.str}.pdf`;
 
     // Get PDF as base64
     const pdfBase64 = pdf.output('datauristring').split(',')[1];
