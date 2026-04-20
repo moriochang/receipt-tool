@@ -822,19 +822,17 @@ async function saveToSheets() {
       });
     }
 
-    const resp = await fetch(GAS_URL, {
+    // GAS doesn't support OPTIONS preflight → must use no-cors + text/plain
+    await fetch(GAS_URL, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
       body:    JSON.stringify({ rows }),
     });
 
-    const sheetsResult = await resp.json();
-    if (sheetsResult.ok) {
-      st.textContent = `✓  已存入 Google Sheets（${sheetsResult.written} 筆）`;
-      st.className = 'st ok';
-    } else {
-      throw new Error(sheetsResult.error || '存檔失敗');
-    }
+    // no-cors = opaque response — assume success if no throw
+    st.textContent = `✓  已存入 Google Sheets（${rows.length} 筆）`;
+    st.className = 'st ok';
 
   } catch(e) {
     st.textContent = '❌  存檔失敗：' + e.message;
@@ -983,23 +981,16 @@ async function saveToDrive() {
     // Get PDF as base64
     const pdfBase64 = pdf.output('datauristring').split(',')[1];
 
-    // Send PDF to GAS (with CORS headers in GAS v3)
-    const resp = await fetch(GAS_URL, {
+    // GAS doesn't support OPTIONS preflight → must use no-cors + text/plain
+    await fetch(GAS_URL, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type:     'pdf',
-        base64:   pdfBase64,
-        filename: filename,
-      }),
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ type: 'pdf', base64: pdfBase64, filename }),
     });
-    const result = await resp.json();
-    if (result.ok) {
-      st.innerHTML = `✓ 已儲存至 Google Drive &nbsp;·&nbsp; <a href="${result.url}" target="_blank" style="color:#007aff;text-decoration:none;font-weight:600;">開啟檔案 ↗</a>`;
-      st.className = 'st ok';
-    } else {
-      throw new Error(result.error || '上傳失敗');
-    }
+    // no-cors = opaque response, can't read reply — assume success if no throw
+    st.innerHTML = `✓ 已儲存至 Google Drive &nbsp;·&nbsp; <a href="https://drive.google.com/drive/folders/1Hw8F3L4zxIBnw5EJCvHMY7ro8qLV5Vtd" target="_blank" style="color:#007aff;text-decoration:none;font-weight:600;">開啟資料夾 ↗</a>`;
+    st.className = 'st ok';
 
   } catch(e) {
     st.textContent = '❌ 上傳失敗：' + e.message;
