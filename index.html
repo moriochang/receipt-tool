@@ -824,8 +824,8 @@ async function saveToSheets() {
 
     const resp = await fetch(GAS_URL, {
       method:  'POST',
-      mode:    'no-cors',   // GAS requires no-cors for CORS-free endpoints
-      headers: { 'Content-Type': 'application/json' },
+      mode:    'no-cors',   // must use text/plain to avoid preflight
+      headers: { 'Content-Type': 'text/plain' },
       body:    JSON.stringify({ rows }),
     });
 
@@ -980,11 +980,11 @@ async function saveToDrive() {
     // Get PDF as base64
     const pdfBase64 = pdf.output('datauristring').split(',')[1];
 
-    // Send to GAS (no-cors — GAS doesn't support preflight OPTIONS)
+    // Send to GAS (no-cors — must use text/plain to avoid preflight)
     await fetch(GAS_URL, {
       method: 'POST',
       mode:   'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         type:     'pdf',
         base64:   pdfBase64,
