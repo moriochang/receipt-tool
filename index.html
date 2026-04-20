@@ -980,9 +980,10 @@ async function saveToDrive() {
     // Get PDF as base64
     const pdfBase64 = pdf.output('datauristring').split(',')[1];
 
-    // Send to GAS
-    const resp = await fetch(GAS_URL, {
+    // Send to GAS (no-cors — GAS doesn't support preflight OPTIONS)
+    await fetch(GAS_URL, {
       method: 'POST',
+      mode:   'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         type:     'pdf',
@@ -991,13 +992,9 @@ async function saveToDrive() {
       }),
     });
 
-    const result = await resp.json();
-    if (result.ok) {
-      st.innerHTML = `✓ 已儲存至 Google Drive &nbsp;·&nbsp; <a href="${result.url}" target="_blank" style="color:#007aff;text-decoration:none;font-weight:600;">開啟檔案 ↗</a>`;
-      st.className = 'st ok';
-    } else {
-      throw new Error(result.error || '未知錯誤');
-    }
+    // no-cors returns opaque response — assume success if no exception
+    st.innerHTML = `✓ 已儲存至 Google Drive &nbsp;·&nbsp; <a href="https://drive.google.com/drive/folders/1Hw8F3L4zxIBnw5EJCvHMY7ro8qLV5Vtd" target="_blank" style="color:#007aff;text-decoration:none;font-weight:600;">開啟資料夾 ↗</a>`;
+    st.className = 'st ok';
 
   } catch(e) {
     st.textContent = '❌ 上傳失敗：' + e.message;
